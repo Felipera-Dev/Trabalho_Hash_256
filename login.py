@@ -4,6 +4,8 @@ import hashlib
 import itertools
 import time
 
+#Seção1 
+
 def LerDadosUser(nomearquivo):
     with open(nomearquivo) as file:
         data = json.load(file)
@@ -78,16 +80,21 @@ def Secao1():
         else:
             print("Opção inválida")
 
+
+#Seção 2 
+
 def Secao2(arq):
     inicio_timer_total = time.time()
     dados_usuarios  = LerDadosUser(arq)
     
     for user in dados_usuarios:
+        achou_senha = True
         print(f"Procurando senha do usuário: {user['user']}")
         inicio_timer_user = time.time()
         caracteres = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                   'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j','k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't','u', 'v', 'w', 'x', 'y', 'z',
-                  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J','K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T','U', 'V', 'W', 'X', 'Y', 'Z']
+                  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J','K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T','U', 'V', 'W', 'X', 'Y', 'Z',
+                  '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+', '{', '}', '[', ']', ':', ';', '"', "'", '<', '>', ',', '.', '?', '/','\\' ]
         combinacoes = itertools.product(caracteres, repeat=4) # gerando combinações de 4 caracteres com plano cartesiano
         for combinacao_tupla in combinacoes:
                 combinacao = ("".join(combinacao_tupla))#como as combinações são tuplas(plano cartesiano), foi utilizado o join para transformar em string
@@ -97,12 +104,22 @@ def Secao2(arq):
                     fim_timer_user = time.time()
                     print(f" - Usuario:{user['user']} Senha encontrada: {combinacao}")
                     print(f" - Tempo de execução: {fim_timer_user - inicio_timer_user:.4f} segundos")
+                    achou_senha = True
                     break
-        print("Nenhuma senha encontrada para o usuário:", user['user'])	
+                else: 
+                    achou_senha = False
+        if not achou_senha:
+            fim_timer_user = time.time()
+            print(f" - Usuario:{user['user']} Senha não encontrada")
+            print(f" - Tempo de execução: {fim_timer_user - inicio_timer_user:.4f} segundos")
+       
                 
         
     fim_timer_total = time.time()
     print(f"Tempo total de execução: {fim_timer_total - inicio_timer_total:.4f} segundos")
+
+
+#Seção 3 
 
 def Secao3():
     print("Gerando Hash nas senhas dos usuários cadastrados(hash do hash)...")
